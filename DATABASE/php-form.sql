@@ -40,8 +40,8 @@ CREATE TABLE `register` (
 --
 
 INSERT INTO `register` (`id`, `name`, `email`, `pass`, `created_at`) VALUES
-(7, 'Bhai', 'bhai@gmail.com', '$2y$10$UHd8ICPmBEMpSqHrteg5gO2tYeOqvbZZ2vvf3WTBb9yKrMXjQFwpm', '2022-11-03 15:41:03');
-
+(7, 'Shafin', 'shafin@gmail.com', '$2y$10$UHd8ICPmBEMpSqHrteg5gO2tYeOqvbZZ2vvf3WTBb9yKrMXjQFwpm', '2022-11-03 15:41:03');
+/* Password is : 123456 */
 --
 -- Indexes for dumped tables
 --
