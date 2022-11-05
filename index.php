@@ -4,9 +4,10 @@
 session_start();
 ob_start();
 
-if (!isset($_SESSION['uname'])) {
+if (!isset( $_SESSION['uname'] ) || !isset( $_SESSION['adname'] ) ) {
   header("location: reglog.php");
 }
+
 
 ?>
 <!-- fully functional secure php login and registration form by shafin -->
@@ -34,6 +35,13 @@ if (!isset($_SESSION['uname'])) {
           <form  class="sign-in-form"
           enctype="multipart/form-data" onsubmit="return">
             <h2 class="title">Details</h2>
+            <p style="color:gray;font-weight:600">  
+            <?php 
+           if ( isset( $_SESSION['login'] )) {
+             echo $_SESSION['login'];
+           }
+            ?> 
+            </p>
             <div class="input-field">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="<?=$_SESSION['uname']?>" name="name" disabled/>
@@ -122,7 +130,7 @@ position: relative;">LogOut</a>
     </div>
 
     <script src="js/functions.js"></script>
-      <script   src="https://kit.fontawesome.com/64d58efce2.js"   crossorigin="anonymous"></script>
+      <script src="https://kit.fontawesome.com/64d58efce2.js"  crossorigin="anonymous"></script>
       
       <script>
       $( document ).ready(function() {

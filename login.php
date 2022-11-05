@@ -34,9 +34,21 @@ else{
                 $pass_decode = password_verify($pass, $db_pass);
 
                 if ($pass_decode && $db_mail===$email) {
+                    $admincheck = "SELECT * FROM register where admin='active'";
+                    $adquery = mysqli_query($db, $admincheck);
+                    $run = mysqli_num_rows($adquery);
+                  if ($run) {
+                    $admindata = mysqli_fetch_assoc($adquery);
+                    $_SESSION['adname'] =  $admindata['name'];
                     $_SESSION['uname'] =  $email_pass['name'];
                     $_SESSION['umail'] =  $email_pass['email'];
-                    $_SESSION['login'] = "YOU ARE LOGGED IN";
+                    $_SESSION['login'] = "YOU ARE LOGGED IN AS ADMIN";
+                  }else{
+                    $_SESSION['uname'] =  $email_pass['name'];
+                    $_SESSION['umail'] =  $email_pass['email'];
+                    $_SESSION['login'] = "YOU ARE LOGGED IN AS USER";
+                  }
+                 
             ?>
                  <script>
                     //  alert('YOU ARE NOW LOGGED IN');

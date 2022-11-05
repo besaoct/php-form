@@ -30,15 +30,11 @@ if (isset($_POST["reg"])) {
     $query = mysqli_query($db, $emailquery);
     $emailcount = mysqli_num_rows($query);
     if ($emailcount > 0) {
-      $_SESSION['error'] = "EMAIL ALREADY EXISTS";
+      $_SESSION['logmsg'] = "Email already exists. Please Register again";
+      // $_SESSION['logmsg'] = $_POST['logmsg'];
+      header("location: reglog.php");
     } else {
-    if ($pass!==$cpass) {
-     
-    header("location: reglog.php");
- 
-    }
-  }
-
+    if ($pass===$cpass) {
        $stmt = $db->prepare("INSERT INTO register(name, email, pass) VALUES ( ?,  ?, ? )");
        $stmt->bind_param("sss", $name, $email, $pass);
        $stmt->execute();
@@ -49,6 +45,15 @@ if (isset($_POST["reg"])) {
     
     }
     $stmt->close();
+   
+ 
+    }else{
+       $_SESSION["logmsg"] = "Password does not match."; 
+       header("location: reglog.php");
+    }
+  }
+
+   
 }
 
 ?>
@@ -66,33 +71,51 @@ if (isset($_POST["reg"])) {
       <meta name="author" content="Amineghafour">
       <title>Login & Register </title>
       <link rel="stylesheet" href="css/style.css" />
+      <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+
   </head>
     
-  <body>
+  <body onLoad="onLoad()">
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
 
 <!-- login -->
+
+
    <form method="POST" action="./login.php"  class="sign-in-form"
    enctype="multipart/form-data" onsubmit="return">
             <h2 class="title">Login</h2>
-            <p  style="color:gray;font-weight:600"> 
-              <?php 
+<div  style="background-color:#4848eb;display:block" role="alert" class="alert" >
+             <?php 
               if(isset($_SESSION['logmsg'])) {
                 echo $_SESSION['logmsg'];
                }else{
-                 echo "";
+                 echo " ";
                 }
               ?> 
-          </p>
+
+  </button>
+
+
+</div>
+
+            <!-- <p  style="color:gray;font-weight:600"> 
+              <?php 
+              // if(isset($_SESSION['logmsg'])) {
+              //   echo $_SESSION['logmsg'];
+              //  }else{
+              //    echo " ";
+              //   }
+              ?> 
+          </p> -->
             <div class="input-field">
               <i class="fas fa-user" aria-hidden="true"></i>
-              <input type="email" placeholder="Email" name="email" required="">
+              <input type="email" placeholder="Email" name="email" minlength="6"   pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*" required="">
             </div>
             <div class="input-field">
               <i class="fas fa-lock" aria-hidden="true"></i>
-              <input type="password" class="form-control" name="pass" placeholder="Password" required="">
+              <input type="password"  class="form-control" name="pass" placeholder="Password" required="">
             </div>
        <input type="submit" name="login" value="Login" class="btn solid" style="  width: 420px;
  
@@ -119,15 +142,20 @@ position: relative;">
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" name="email" required />
+              <input type="email" placeholder="Email" minlength="6"  pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*" name="email" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" name="pass" />
+              <input type="password" placeholder="Password" 
+              name="pass" 
+              minlenght="6"
+              oninvalid="this.setCustomValidity('at least one number or at least one special charcter')"
+              oninput="this.setCustomValidity('')"
+              required />
             </div>
               <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Confirm Password" name="cpass" />
+              <input type="password" placeholder="Confirm Password" name="cpass" required />
             </div> 
               
             <input type="submit" name="reg" class="btn" value="Sign up"  style="  width: 420px;
@@ -191,5 +219,7 @@ if ( window.history.replaceState ) {
   window.history.replaceState( null, null, window.location.href );
 }
 </script>
-  </body>
+
+
+</body>
 </html>
